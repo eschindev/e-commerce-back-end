@@ -7,6 +7,11 @@ router.get('/', async (req, res) => {
     const categoryData = await Category.findAll({
       include: [{ model: Product }]
     });
+
+    if (!categoryData) {
+      return res.status(404).json({ message: 'Could not retrieve categories.'});
+    }
+
     res.status(200).json(categoryData);
   } catch (err) {
     res.status(500).json(err);
@@ -15,11 +20,10 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   try {
-    const categoryData = await Category.findbyPk(req.params.id, { include: [{ model: Product }] });
+    const categoryData = await Category.findByPk(req.params.id, { include: [{ model: Product }] });
 
     if (!categoryData) {
-      res.status(404).json({ message: 'No category found matching that ID.'});
-      return;
+      return res.status(404).json({ message: 'No category found matching that ID.'});
     }
 
     res.status(200).json(categoryData);
@@ -31,6 +35,11 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const categoryData = await Category.create(req.body)
+
+    if (!categoryData) {
+      return res.status(404).json({ message: 'Could not create category.'});
+    }
+
     res.status(200).json(categoryData);
   } catch (err) {
     res.status(500).json(err);
@@ -46,7 +55,7 @@ router.put('/:id', async (req, res) => {
     });
 
     if(!categoryData) {
-      res.status(404).json({ message: 'No category found matching that ID.'});
+      return res.status(404).json({ message: 'No category found matching that ID.'});
     }
 
     res.status(200).json(categoryData);
@@ -64,7 +73,7 @@ router.delete('/:id', async (req, res) => {
     });
 
     if(!categoryData) {
-      res.status(404).json({ message: 'No category found matching that ID.'});
+      return res.status(404).json({ message: 'No category found matching that ID.'});
     }
 
     res.status(200).json(categoryData);

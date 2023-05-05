@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
       ]});
 
     if (!productData) {
-      res.status(404).json({ message: 'No products found.'})
+      return res.status(404).json({ message: 'No products found.'})
     }
 
     res.status(200).json(productData);
@@ -41,7 +41,7 @@ router.get('/:id', async (req, res) => {
     });
 
     if (!productData) {
-      res.status(404).json({ message: 'No products found matching that ID.'})
+      return res.status(404).json({ message: 'No products found matching that ID.'})
     }
 
     res.status(200).json(productData);
@@ -126,14 +126,14 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   try {
-    const productData = await Product.Destroy({
+    const productData = await Product.destroy({
       where: {
         id: req.params.id
       }
     });
 
     if (!productData) {
-      res.status(404).json({ message: 'No products found matching that ID.'})
+      return res.status(404).json({ message: 'No products found matching that ID.'})
     }
 
     res.status(200).json(productData);
